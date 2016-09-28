@@ -3,6 +3,12 @@ import java.util.List;
 import org.sql2o.*;
 import java.sql.Timestamp;
 
+//TODO: delete methods for all classes probably
+//TODO: update method for all classes probably
+//TODO: front end
+//TODO: search methods?
+//TODO: alternate method for sorting posts by comment number
+
 public class Post {
   private int id;
   private String title;
