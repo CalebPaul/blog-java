@@ -65,4 +65,35 @@ public class Post {
       return object;
     }
   }
+
+  public void addTag(Tag tag) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO posts_tags (post_id, tag_id) VALUES (:post_id, :tag_id)";
+      con.createQuery(sql)
+      .addParameter("post_id", this.getId())
+      .addParameter("tag_id", tag.getId())
+      .executeUpdate();
+    }
+  }
+
+  public List<Tag> getTags() {
+    try(Connection con = DB.sql2o.open()){
+      String joinQuery = "SELECT tags.* FROM posts " +
+      "JOIN posts_tags ON (posts.id = posts_tags.post_id) " +
+      "JOIN tags ON (posts_tags.tag_id = tags.id) "+
+      "WHERE posts.id = :id";
+      return con.createQuery(joinQuery)
+        .addParameter("id", this.getId())
+        .executeAndFetch(Tag.class);
+    }
+  }
+
+  public List<ParentComment> getComments() {
+    try(Connection con = DB.sql2o.open()){
+      String joinQuery = "SELECT * FROM comments WHERE parent_id=:id AND type='parent' ORDER BY comment_date";
+      return con.createQuery(joinQuery)
+        .addParameter("id", this.getId())
+        .executeAndFetch(ParentComment.class);
+    }
+  }
 }

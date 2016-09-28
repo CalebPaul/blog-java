@@ -54,4 +54,16 @@ public class Tag {
       return object;
     }
   }
+
+  public List<Post> getPosts() {
+    try(Connection con = DB.sql2o.open()){
+      String joinQuery = "SELECT posts.* FROM posts " +
+      "JOIN posts_tags ON (posts.id = posts_tags.post_id) " +
+      "JOIN tags ON (posts_tags.tag_id = tags.id) "+
+      "WHERE tags.id = :id";
+      return con.createQuery(joinQuery)
+        .addParameter("id", this.getId())
+        .executeAndFetch(Post.class);
+    }
+  }
 }

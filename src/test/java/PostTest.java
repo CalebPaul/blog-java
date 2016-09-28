@@ -39,7 +39,7 @@ public class PostTest {
   }
 
   @Test
-  public void all_returnsAllInstancesOfPerson_true() {
+  public void all_returnsAllInstancesOfTag_true() {
     testPost.save();
     testPost2.save();
     assertEquals(true, Post.all().get(0).equals(testPost));
@@ -59,4 +59,40 @@ public class PostTest {
     testPost2.save();
     assertEquals(Post.find(testPost2.getId()), testPost2);
   }
+
+  @Test
+  public void addTag_addsTagToPost() {
+    testPost.save();
+    Tag testTag = new Tag("Waffles");
+    testTag.save();
+    testPost.addTag(testTag);
+    Tag savedTag = testPost.getTags().get(0);
+    assertTrue(testTag.equals(savedTag));
+  }
+
+  @Test
+  public void getTags_returnsAllTags_List() {
+    testPost.save();
+    Tag testTag = new Tag("Waffles");
+    testTag.save();
+    testPost.addTag(testTag);
+    List savedTags = testPost.getTags();
+    assertEquals(savedTags.size(), 1);
+  }
+
+  @Test
+  public void getParentComments_returnsAllParentComments_List() {
+    testPost.save();
+    ParentComment testParentComment = new ParentComment("diaf", "go home ur drunk", testPost.getId());
+    testParentComment.save();
+    List savedParentComments = testPost.getComments();
+    assertEquals(savedParentComments.size(), 1);
+  }
+
+  // @Test
+  // public void delete_deletesPost_True() {
+  //   testPost.save();
+  //   testPost.delete();
+  //   assertEquals(0, Post.all().size());
+  // }
 }

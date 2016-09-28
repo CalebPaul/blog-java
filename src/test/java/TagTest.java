@@ -59,4 +59,14 @@ public class TagTest{
     testTag2.save();
     assertEquals(Tag.find(testTag2.getId()), testTag2);
   }
+
+  @Test
+  public void getPosts_returnsAllPosts_List() {
+    Post testPost = new Post("cake rules", "pie drools");
+    testPost.save();
+    testTag.save();
+    testPost.addTag(testTag);
+    List savedPosts = testTag.getPosts();
+    assertEquals(savedPosts.size(), 1);
+  }
 }
