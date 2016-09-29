@@ -55,6 +55,33 @@ public class Tag {
     }
   }
 
+  public static Tag findByName(String tag_name) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM tags where tag_name=:tag_name";
+      Tag object = con.createQuery(sql)
+        .addParameter("tag_name", tag_name)
+        .executeAndFetchFirst(Tag.class);
+      return object;
+    }
+  }
+
+  public void update(String newName) {
+    this.tag_name = newName;
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE comments SET tag_name=:tag_name WHERE id=:id";
+      con.createQuery(sql).addParameter("id", this.id).addParameter("tag_name", this.tag_name).executeUpdate();
+    }
+  }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM tags WHERE id=:id";
+      String deleteChild = "DELETE FROM posts_tags WHERE tag_id=:id";
+      con.createQuery(sql).addParameter("id", this.id).executeUpdate();
+      con.createQuery(deleteChild).addParameter("id", this.id).executeUpdate();
+    }
+  }
+
   public List<Post> getPosts() {
     try(Connection con = DB.sql2o.open()){
       String joinQuery = "SELECT posts.* FROM posts " +

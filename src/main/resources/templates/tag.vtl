@@ -4,4 +4,7 @@
   <h3><a href="/posts/$post.getId()">$post.getTitle()</a></h3>
 #end
 
+<form action="/tags/$tag.getId()/delete" method="post">
+  <button type="submit" name="button" class="btn btn-danger">Delete Tag</button>
+</form>
 <a href="/">Back to Index</a>

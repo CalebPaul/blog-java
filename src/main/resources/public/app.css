@@ -1,0 +1,14 @@
+ul.inline {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+ul.inline li{
+  display: inline;
+}
+
+h6 {
+  display: inline-block;
+}

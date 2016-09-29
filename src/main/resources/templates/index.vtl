@@ -14,7 +14,7 @@
 
 <h4>All Tags</h4>
 #if($tags.size() > 0)
-  <ul>
+  <ul class="inline">
     #foreach($tag in $tags)
       <li><h6><a href="/tags/$tag.getId()">$tag.getName()</a></h6></li>
     #end

@@ -1,0 +1,27 @@
+<h2>$comment.getTitle()</h2>
+<p>$comment.getBody()</p>
+
+#if($comment.getChildComments().size() > 0)
+<h3><em>Comments</em></h3>
+  #foreach($reply in $comment.getChildComments())
+    <h4>$reply.getTitle()</h4>
+    <p>$reply.getBody()</p>
+  #end
+#else
+  No comments yet!
+#end
+
+<h3>Leave a reply to this comment!</h3>
+<form action="/posts/$post.getId()/comments/$comment.getId()/reply" method="post">
+  <div class="form-group">
+    <label for="title">Comment Title</label>
+    <input type="text" name="title" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="body">Comment</label>
+    <textarea name="body" class="form-control"></textarea>
+  </div>
+  <button type="submit" class="btn btn-info">Save Comment</button>
+</form>
+
+<a href="/posts/$post.getId()"> Back to post</a>
