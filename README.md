@@ -14,11 +14,6 @@ _A template java app with support for gradle, postgresql, spark and junit testin
 * _gradle will download and install junit and spark_
 * _the sql2o library will be used to interact with a postgresql database_
 
-
-## GitHub link
-
-https://github.com/ewajm/javaSparkPostgres
-
 ## Licensing
 
 * MIT

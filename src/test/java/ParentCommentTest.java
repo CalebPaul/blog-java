@@ -65,8 +65,28 @@ public class ParentCommentTest {
   public void getChildComments_returnsAllChildComments_List() {
     testParentComment.save();
     ChildComment testChildComment = new ChildComment("diaf", "go home ur drunk", testParentComment.getId());
+    ChildComment testChildComment2 = new ChildComment("pie sux", "roflcopter", 88);
     testChildComment.save();
+    testChildComment2.save();
     List savedChildComments = testParentComment.getChildComments();
     assertEquals(savedChildComments.size(), 1);
+  }
+
+  @Test
+  public void delete_deletesComment_True() {
+    testParentComment.save();
+    ChildComment testChildComment = new ChildComment("diaf", "go home ur drunk", testParentComment.getId());
+    testChildComment.save();
+    testParentComment.delete();
+    assertEquals(0, ParentComment.all().size());
+    assertEquals(0, ChildComment.all().size());
+  }
+
+  @Test
+  public void update_updatesParentComment_True() {
+    testParentComment.save();
+    testParentComment.update("lol @ u");
+    ParentComment newComment = ParentComment.find(testParentComment.getId());
+    assertEquals("lol @ u", newComment.getBody());
   }
 }

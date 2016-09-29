@@ -59,4 +59,19 @@ public class ChildCommentTest {
     testChildComment2.save();
     assertEquals(ChildComment.find(testChildComment2.getId()), testChildComment2);
   }
+
+  @Test
+  public void delete_deletesChildComment_True() {
+    testChildComment.save();
+    testChildComment.delete();
+    assertEquals(0, ChildComment.all().size());
+  }
+
+  @Test
+  public void update_updatesChildComment_True() {
+    testChildComment.save();
+    testChildComment.update("lol @ u");
+    ChildComment newComment = ChildComment.find(testChildComment.getId());
+    assertEquals("lol @ u", newComment.getBody());
+  }
 }

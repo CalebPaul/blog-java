@@ -89,10 +89,20 @@ public class PostTest {
     assertEquals(savedParentComments.size(), 1);
   }
 
-  // @Test
-  // public void delete_deletesPost_True() {
-  //   testPost.save();
-  //   testPost.delete();
-  //   assertEquals(0, Post.all().size());
-  // }
+  @Test
+  public void delete_deletesPost_True() {
+    testPost.save();
+    ParentComment testParentComment = new ParentComment("diaf", "go home ur drunk", testPost.getId());
+    testParentComment.save();
+    testPost.delete();
+    assertEquals(0, Post.all().size());
+  }
+
+  @Test
+  public void update_updatesPost_True() {
+    testPost.save();
+    testPost.update("pie droolz");
+    Post newComment = Post.find(testPost.getId());
+    assertEquals("pie droolz", newComment.getContent());
+  }
 }

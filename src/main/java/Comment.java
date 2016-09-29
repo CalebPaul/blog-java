@@ -55,5 +55,11 @@ public abstract class Comment {
     }
   }
 
-
+  public void update(String newBody) {
+    this.body = newBody;
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE comments SET body=:body WHERE id=:id";
+      con.createQuery(sql).addParameter("id", this.id).addParameter("body", this.body).executeUpdate();
+    }
+  }
 }

@@ -39,4 +39,15 @@ public class ParentComment extends Comment {
         .executeAndFetch(ChildComment.class);
     }
   }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM comments WHERE id=:id";
+      String deleteChild = "DELETE FROM comments WHERE parent_id=:id AND type = 'child'";
+      con.createQuery(sql).addParameter("id", this.id).executeUpdate();
+      con.createQuery(deleteChild).addParameter("id", this.id).executeUpdate();
+    }
+  }
+
+
 }

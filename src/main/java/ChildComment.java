@@ -24,7 +24,7 @@ public class ChildComment extends Comment {
 
   public static ChildComment find(int id) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM comments where id=:id";
+      String sql = "SELECT * FROM comments WHERE id=:id";
       ChildComment object = con.createQuery(sql)
         .addParameter("id", id)
         .throwOnMappingFailure(false)
@@ -32,4 +32,12 @@ public class ChildComment extends Comment {
       return object;
     }
   }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM comments WHERE id=:id";
+      con.createQuery(sql).addParameter("id", this.id).executeUpdate();
+    }
+  }
+
 }

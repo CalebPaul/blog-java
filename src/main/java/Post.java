@@ -3,9 +3,10 @@ import java.util.List;
 import org.sql2o.*;
 import java.sql.Timestamp;
 
-//TODO: delete methods for all classes probably
-//TODO: update method for all classes probably
 //TODO: front end
+
+//TODO: remove tag from post (w/o delete)
+//TODO: remove post from tag? (some sort of admin action thingy?)
 //TODO: search methods?
 //TODO: alternate method for sorting posts by comment number
 
@@ -100,6 +101,36 @@ public class Post {
       return con.createQuery(joinQuery)
         .addParameter("id", this.getId())
         .executeAndFetch(ParentComment.class);
+    }
+  }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()){
+      String sql = "DELETE FROM posts WHERE id=:id";
+      con.createQuery(sql)
+         .addParameter("id", this.getId())
+         .executeUpdate();
+      String joinDeleteQuery = "DELETE FROM posts_tags WHERE post_id=:post_id";
+      con.createQuery(joinDeleteQuery)
+         .addParameter("post_id", this.getId())
+         .executeUpdate();
+      String selectAllComments = "SELECT id FROM comments WHERE parent_id = :id AND type='parent'";
+      //String selectAllComments = "SELECT t2.id FROM comments t1 JOIN comments t2 ON t1.id=t2.parent_id WHERE t1.parent_id = :id AND t1.type='parent' OR t2.type='child'";
+      List<Integer> commentIds = con.createQuery(selectAllComments).addParameter("id", id).executeAndFetch(Integer.class);
+      for(Integer commentId : commentIds){
+        String deleteString = "DELETE FROM comments WHERE id=:id";
+        String deleteChildString = "DELETE FROM comments WHERE parent_id=:id AND type='child'";
+        con.createQuery(deleteString).addParameter("id", commentId).executeUpdate();
+        con.createQuery(deleteChildString).addParameter("id", commentId).executeUpdate();
+      }
+    }
+  }
+
+  public void update(String newContent) {
+    this.content = newContent;
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE posts SET content=:content WHERE id=:id";
+      con.createQuery(sql).addParameter("id", this.id).addParameter("content", this.content).executeUpdate();
     }
   }
 }
