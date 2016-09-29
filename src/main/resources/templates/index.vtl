@@ -1,0 +1,26 @@
+<h2>Just Desserts Blog</h2>
+
+<h3>All Posts</h3>
+#if($posts.size() > 0)
+  <ul>
+    #foreach($post in $posts)
+    <li><h4> <a href="/posts/$post.getId()"> $post.getTitle()</a></h4></li>
+    #end
+  </ul>
+
+#else
+<h4>No Posts</h4>
+#end
+
+<h4>All Tags</h4>
+#if($tags.size() > 0)
+  <ul>
+    #foreach($tag in $tags)
+      <li><h6><a href="/tags/$tag.getId()">$tag.getName()</a></h6></li>
+    #end
+  </ul>
+#else
+  <h6>No Tags</h6>
+#end
+
+<h4><a href="/posts/new">New Post</a></h4>

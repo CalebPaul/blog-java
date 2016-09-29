@@ -1,0 +1,31 @@
+<h2>$post.getTitle()</h2>
+<p>$post.getContent()</p>
+<p>
+  #foreach($tag in $post.getTags())
+    <a href="/tags/$tag.getId()">$tag.getName()</a>
+  #end
+</p>
+#if($post.getComments().size() > 0)
+<h3><em>Comment</em></h3>
+  #foreach($comment in $post.getComments())
+    <h4>$comment.getTitle()</h4>
+    <p>$comment.getBody()</p>
+    <p><a href="/posts/$post.getId()/comments/$comment.getId()">$comment.getChildComments().size() subcomments</a></p>
+  #end
+#else
+  No comments yet!
+#end
+<h3>Leave a comment!</h3>
+<form action="/posts/$post.getId()" method="post">
+  <div class="form-group">
+    <label for="title">Comment Title</label>
+    <input type="text" name="title" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="body">Comment</label>
+    <textarea name="body" class="form-control"></textarea>
+  </div>
+  <button type="submit" class="btn btn-info">Save Comment</button>
+</form>
+
+<a href="/">Back to Index</a>
